@@ -1,0 +1,161 @@
+@@ -0,0 +1,420 @@
+
+Protractor for AngularJS
+
+Writing end-to-end tests
+
+Table of contents
+
+Why is testing so important?
+
+ Testing is to ensure that your code does what you think it should do 
+
+Idea behind E2E testing?
+•Is my backend communicating with my frontend?
+•It does NOT replace Unit Testing!
+
+The dark side of E2E testing
+•It needs a specific running environment
+•It's hard to write
+•It's difficult to debug
+•It's hard to keep the tests up-to-date
+
+Protractor is built on top of WebDriverJS
+
+Testing system (NodeJS, Java, etc) 
+| 
+Webdriver (a.k.a. Selenium) 
+| 
+Your AngularJS App
+Reference: Testing AngularJS apps with Protractor (http://angular.github.io/protractor/#/tutorial)
+
+Install
+1. Download Node.JS
+2.sudo npm install protractor -g
+3.sudo webdriver-manager update
+
+Setup a conf.js file
+exports.config = {
+  seleniumAddress: 'http://localhost:4444/wd/hub',
+
+  capabilities: {
+    'browserName': 'chrome'
+  },
+
+  specs: ['example-spec.js'],
+
+  jasmineNodeOpts: {
+    showColors: true
+  }
+};
+
+ Write your tests using Jasmine and WebdriverJS
+ describe('by model', function() {
+   it('should find an element by text input model', function() {
+     var username = element(by.model('username'));
+     var name = element(by.binding('username'));
+   
+     username.clear();
+     expect(name.getText()).toEqual('');
+   
+     username.sendKeys('Jane Doe');
+     expect(name.getText()).toEqual('Jane Doe');
+   });
+});
+Protractor global variables
+•browser: browser.get()
+•element and by: element(by.model('yourName'))
+•protractor: protractor.Key
+
+Basic example
+// example-spec.js
+describe('angularjs homepage', function() {
+  it('should greet the named user', function() {
+    browser.get('http://www.angularjs.org');
+
+    element(by.model('yourName')).sendKeys('Julie');
+
+    var greeting = element(by.binding('yourName'));
+
+    expect(greeting.getText()).toEqual('Hello Julie!');
+  });
+});
+
+ Let's run it?
+
+first, open the terminal and start the webdriver server: 
+webdriver-manager start
+After that, you can run Protractor in another terminal by typing:
+protractor test/e2e/config.js // this is the relative path to your config.js file
+Searching for elements on the page
+
+locators
+
+element() vs element.all()
+
+Single element
+element( by.binding('appName') );
+Collection of elements
+// clicks the 3rd element
+element.all( by.css('[ng-click="openPage()"]') ).get(2).click();
+by.binding
+
+In your test
+element( by.binding('myModel') );
+In your application
+<span ng-bind="myModel"></span>
+<!-- or -->
+<span>{{myModel}}</span>
+
+ by.model
+
+In your test
+element( by.model('myModel') );
+In your application
+<input ng-model="myModel" />
+by.repeater
+
+In your test
+element( by.repeater('user in users').row(0).column('name') );
+In your application
+<ul>
+  <li ng-repeat="user in users">
+      <span>{{user.name}}</span>
+  </li>
+</ul>
+by.css
+
+In your test
+element( by.css('[ng-click="sendMail()"]') );
+In your application
+<button ng-click="sendMail()">Send mail!</button>
+Find out more in Protractor API
+•by.select()
+•by.partialButtonText()
+•elementArrayFinder.each()
+• Full list of available methods 
+
+Searching elements best practices
+•Take advantage of AngularJS attributes using by.model, by.repeater, etc
+•Avoid using potential CSS attributes, mainly IDs and Classes.
+
+Some examples on Executing events
+
+.click()
+
+In your test
+element( by.css('[ng-click="submit()"]') ).click();
+In your application
+<button ng-click="submit()"><button>
+On Enter Press
+
+In your test
+element( by.model('commentText') ).sendKeys("Hi!", protractor.Key.ENTER);
+In your application
+<textarea ng-model="commentText"><textarea>
+Debugging using elementexplorer
+1.Start your webdriver server:
+webdriver-manager start
+2.Run:
+ /usr/local/lib/node_modules/protractor/bin/elementexplorer.js http://angularjs.org
+3.Press 'tab' and play with any element locator.
