@@ -6,20 +6,6 @@ Writing end-to-end tests
 
 Table of contents
 
-Why is testing so important?
-
- Testing is to ensure that your code does what you think it should do 
-
-Idea behind E2E testing?
-•Is my backend communicating with my frontend?
-•It does NOT replace Unit Testing!
-
-The dark side of E2E testing
-•It needs a specific running environment
-•It's hard to write
-•It's difficult to debug
-•It's hard to keep the tests up-to-date
-
 Protractor is built on top of WebDriverJS
 
 Testing system (NodeJS, Java, etc) 
@@ -43,7 +29,7 @@ exports.config = {
   },
 
   specs: ['example-spec.js'],
-
+  baseUrl: Url to launch,
   jasmineNodeOpts: {
     showColors: true
   }
