@@ -16,9 +16,9 @@ Your AngularJS App
 Reference: Testing AngularJS apps with Protractor (http://angular.github.io/protractor/#/tutorial)
 
 Install
-1. Download Node.JS
-2.sudo npm install protractor -g
-3.sudo webdriver-manager update
+1. Download Node.JS (https://nodejs.org/download/ - 64 bit for windows)
+2.npm install -g protractor
+3.webdriver-manager update
 
 Setup a conf.js file
 exports.config = {
@@ -48,6 +48,7 @@ exports.config = {
      expect(name.getText()).toEqual('Jane Doe');
    });
 });
+
 Protractor global variables
 •browser: browser.get()
 •element and by: element(by.model('yourName'))
@@ -55,19 +56,17 @@ Protractor global variables
 
 Basic example
 // example-spec.js
+
 describe('angularjs homepage', function() {
   it('should greet the named user', function() {
     browser.get('http://www.angularjs.org');
-
     element(by.model('yourName')).sendKeys('Julie');
-
     var greeting = element(by.binding('yourName'));
-
     expect(greeting.getText()).toEqual('Hello Julie!');
   });
 });
 
- Let's run it?
+ How to Run the Script
 
 first, open the terminal and start the webdriver server: 
 webdriver-manager start
@@ -75,33 +74,35 @@ After that, you can run Protractor in another terminal by typing:
 protractor test/e2e/config.js // this is the relative path to your config.js file
 Searching for elements on the page
 
-locators
+Usage of locators
 
 element() vs element.all()
 
-Single element
+//Single element
 element( by.binding('appName') );
-Collection of elements
-// clicks the 3rd element
+//Collection of elements
+clicks the 3rd element
 element.all( by.css('[ng-click="openPage()"]') ).get(2).click();
+
 by.binding
 
-In your test
+//In your test
 element( by.binding('myModel') );
-In your application
+//In your application
 <span ng-bind="myModel"></span>
 <!-- or -->
 <span>{{myModel}}</span>
 
  by.model
-
-In your test
+ 
+//In your test
 element( by.model('myModel') );
 In your application
 <input ng-model="myModel" />
+
 by.repeater
 
-In your test
+//In your test
 element( by.repeater('user in users').row(0).column('name') );
 In your application
 <ul>
@@ -109,19 +110,22 @@ In your application
       <span>{{user.name}}</span>
   </li>
 </ul>
+
 by.css
 
-In your test
+//In your test
 element( by.css('[ng-click="sendMail()"]') );
 In your application
 <button ng-click="sendMail()">Send mail!</button>
+
 Find out more in Protractor API
 •by.select()
 •by.partialButtonText()
 •elementArrayFinder.each()
 • Full list of available methods 
 
-Searching elements best practices
+Searching elements best practices ( Protractor API - http://angular.github.io/protractor/#/api)
+
 •Take advantage of AngularJS attributes using by.model, by.repeater, etc
 •Avoid using potential CSS attributes, mainly IDs and Classes.
 
@@ -129,16 +133,18 @@ Some examples on Executing events
 
 .click()
 
-In your test
+//In your test
 element( by.css('[ng-click="submit()"]') ).click();
 In your application
 <button ng-click="submit()"><button>
+
 On Enter Press
 
-In your test
+//In your test
 element( by.model('commentText') ).sendKeys("Hi!", protractor.Key.ENTER);
 In your application
 <textarea ng-model="commentText"><textarea>
+
 Debugging using elementexplorer
 1.Start your webdriver server:
 webdriver-manager start
